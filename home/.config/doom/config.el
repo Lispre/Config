@@ -266,8 +266,15 @@
   (set! :company-backend 'rust-mode '(company-lsp))
   )
 
-(setq projectile-require-project-root t)
-(setq compilation-read-command nil)     ; no prompt in projectile-compile-project
+(after! projectile
+  (setq projectile-require-project-root t)
+  (setq compilation-read-command nil)  ; no prompt in projectile-compile-project
+  ;; . -> Build
+  (projectile-register-project-type 'cmake '("CMakeLists.txt")
+                                    :configure "cmake %s"
+                                    :compile "cmake --build Debug"
+                                    :test "ctest")
+  )
 
 (after! counsel-projectile
   (ivy-add-actions
